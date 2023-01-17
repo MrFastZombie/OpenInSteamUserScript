@@ -3,7 +3,7 @@
 // @version      0.1
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
-// @match        https://store.steampowered.com/*
+// @match        https://*.steampowered.com/*
 // @match        https://steamcommunity.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=steampowered.com
 // @grant        none
