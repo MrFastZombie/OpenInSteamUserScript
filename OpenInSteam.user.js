@@ -16,9 +16,18 @@
     var $ = window.jQuery;
     var pageurl = $(location).attr('href');
     var inbutton = $(".header_installsteam_btn_gray");
-    var newbutton = inbutton.clone();
-    newbutton.attr("class", "openClient header_installsteam_btn header_installsteam_btn_gray");
-    newbutton.find(".header_installsteam_btn_content").text("Open in client");
-    newbutton.find(".header_installsteam_btn_content").attr("href","steam://openurl/" + pageurl);
+    var newbutton = $('<div>', {
+        id: 'openClient'
+    });
+
+    var newbuttonContent = $('<a>', {
+        class:"openClientContent",
+        href: "steam://openurl/" + pageurl,
+        text: "Open in client"
+    });
+
+    newbutton.css({"display":"inline-block","height":"21px","line-height":"24px","margin-right":"3px"});
+    newbuttonContent.css({"display":"inline-block","padding-left":"35px","padding-right":"9px","background-position":"10px 5px","background-image":"url( 'https://i.imgur.com/7ITFIh4.png' )","background-repeat":"no-repeat","text-decoration":"none","color":"#e5e4dc","font-weight":"normal","background-color":"#3691fa"})
     newbutton.prependTo("#global_action_menu");
+    newbuttonContent.appendTo(newbutton);
 })();
