@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OpenInSteam
-// @version      0.1
+// @version      0.2
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
 // @match        https://*.steampowered.com/*
@@ -27,7 +27,7 @@
     });
 
     newbutton.css({"display":"inline-block","height":"21px","line-height":"24px","margin-right":"3px"});
-    newbuttonContent.css({"display":"inline-block","padding-left":"35px","padding-right":"9px","background-position":"10px 5px","background-image":"url( 'https://i.imgur.com/7ITFIh4.png' )","background-repeat":"no-repeat","text-decoration":"none","color":"#e5e4dc","font-weight":"normal","background-color":"#3691fa"})
+    newbuttonContent.css({"display":"inline-block","padding-left":"35px","padding-right":"9px","background-position":"10px 5px","background-image":"url( 'https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png' )","background-repeat":"no-repeat","text-decoration":"none","color":"#e5e4dc","font-weight":"normal","background-color":"#3691fa"})
     newbutton.prependTo("#global_action_menu");
     newbuttonContent.appendTo(newbutton);
 })();
