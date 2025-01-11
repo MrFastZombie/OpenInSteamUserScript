@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OpenInSteam
-// @version      0.2
+// @version      0.3
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
 // @match        https://*.steampowered.com/*
@@ -13,14 +13,18 @@
 (function() {
     'use strict';
 
-    var $ = window.jQuery;
-    var pageurl = $(location).attr('href');
-    var inbutton = $(".header_installsteam_btn_gray");
-    var newbutton = $('<div>', {
+    //var $ = window.jQuery;
+
+    var dom = {};
+    dom.query = jQuery.noConflict( true );
+
+    var pageurl = dom.query(location).attr('href');
+    var inbutton = dom.query(".header_installsteam_btn_gray");
+    var newbutton = dom.query('<div>', {
         id: 'openClient'
     });
 
-    var newbuttonContent = $('<a>', {
+    var newbuttonContent = dom.query('<a>', {
         class:"openClientContent",
         href: "steam://openurl/" + pageurl,
         text: "Open in client"
