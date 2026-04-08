@@ -14,6 +14,8 @@ Quickviews on the Steam workshop beta now have a button to open the viewed mod i
 # Installation
 Open the .js file and view as raw. Your Userscript manager should show a page to install. If this does not work, check if your userscript manager requires a different method to install userscripts.
 
+You can also [click here](https://github.com/MrFastZombie/OpenInSteamUserScript/raw/refs/heads/main/OpenInSteam.user.js).
+
 # Settings
 Starting with version 6 there are now settings for the userscript, which can be accessed through the userscript commands menu in your userscript manager. The image below shows how to do so in ViolentMonkey.
 
