@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OpenInSteam
-// @version      0.6
+// @version      0.7
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
 // @match        https://*.steampowered.com/*
@@ -107,9 +107,8 @@
     }
 
     // ---------------------------------------- Quick View Injection ----------------------------------------
-    document.body.addEventListener('click', function(e) { //Potentially run when a click is detected.
-      var checkDiv = document.querySelector("#OpenInSteamButtonDivModView");
-      if(inbutton[0] == undefined && checkDiv == null && injectQuickViewButton == true) { //Do not run if on a non-beta page, the button already exists, or if quickview button is disabled.
+    function injectQuickview(delay) {
+      if(injectQuickViewButton == true) { //Do not run if injecting quick view is disabled.
         setTimeout(function() {
           var modHeader = document.querySelector('h2:has(a)'); //Find the mod header by searching for an h2 that has a <a> in it.
           if(modHeader != null) { //Only run if Quickview is open.
@@ -126,11 +125,29 @@
             linka.href = "steam://openurl/" + modA.href;
             linka.text = "Open in client";
             linka.setAttribute('style', 'width: auto; height: auto; text-decoration: none; padding-right: 7px; padding-left: 29px; padding-top: 7px; height: stretch; text-wrap-mode: nowrap; background-image: url(https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png); background-repeat: no-repeat; background-position-y: center; background-position-x: 8px');
+            if(document.querySelectorAll("#OpenInSteamButtonDivModView").length >= 1) return; //Skip adding the button if it already exists.
             buttonDiv.prepend(nDiv);
             nbutton2.prepend(linka);
             nDiv.prepend(nbutton2);
           }
-        }, 250)
+        }, delay)
+      }
+    }
+
+    document.body.addEventListener('click', function(e) { //Potentially run when a click is detected.
+      var checkDiv = document.querySelector("#OpenInSteamButtonDivModView");
+
+      if(inbutton[0] == undefined && checkDiv == null) { //Do not run if on a non-beta page, the button already exists, or if quickview button is disabled.
+        injectQuickview(quickviewDelay);
+      }
+
+      if(checkDiv != null) {
+        var observer = new MutationObserver(function (e) { //Checks when the target node is changed. Tries another injection if it is.
+          checkDiv = document.querySelector("#OpenInSteamButtonDivModView");
+          if(checkDiv == null) injectQuickview(quickviewDelay);
+        });
+
+        observer.observe(document.getElementById("OpenInSteamButtonDivModView").parentNode.parentNode.parentNode.parentNode, {childList: true}); //Basically it checks when the quick view is destroyed (like when switching to the next one)
       }
     });
     //---------------------------------------- Quick View Injection end ----------------------------------------
