@@ -29,3 +29,5 @@ The settings are as follows:
 * Initial Delay - The time the script will wait before first attempting to inject the button into the Steam page. Increase this if the button disappears and comes back often when you first load the page.
 * Quickview Delay - The amount of time before the script will inject the button on a quickview. Increase this if the button in that menu fails to show up.
 * Inject quickview - If enabled, the button in the quickview menus will be added.
+
+**Settings will only apply on a refresh!**
