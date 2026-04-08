@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OpenInSteam
-// @version      0.4
+// @version      0.3
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
 // @match        https://*.steampowered.com/*
@@ -33,6 +33,9 @@
         var newDiv = document.createElement("div");
         newDiv.setAttribute("id", "OpenInSteamButtonDiv");
         newDiv.setAttribute('style', 'display: inline-block; height: 24px; line-height: 24px; margin-right: 7px');
+        newDiv.onmouseenter = function() { //Change the href when the user is about to press the button.
+          document.querySelector("#OpenInSteamButtonDiv").shadowRoot.querySelector("a").href = "steam://openurl/" + window.location.href;
+        };
         //newDiv.css({"display":"inline-block","height":"21px","line-height":"24px","margin-right":"3px"});
         var shadow = newDiv.attachShadow({ mode: "open" });
         pdiv.prepend(newDiv);
@@ -71,8 +74,6 @@
 
     newbutton.css({"display":"inline-block","height":"21px","line-height":"24px","margin-right":"3px"});
     newbuttonContent.css({"display":"inline-block","padding-left":"35px","padding-right":"9px","background-position":"10px 5px","background-image":"url( 'https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png' )","background-repeat":"no-repeat","text-decoration":"none","color":"#e5e4dc","font-weight":"normal","background-color":"#3691fa"})
-
-
 
     if(inbutton[0] == undefined) { //If the inbutton is undefined, we are on the new workshop layout
       attemptNewInject(initialDelay, parentDiv, dom, pageurl);
