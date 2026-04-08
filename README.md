@@ -2,7 +2,7 @@
 # OpenInSteamUserScript
 Simple userscript that adds a button to open Steam pages in the client.
 
-Note: Steam now has a similar button that appears on game pages when you are not signed in. This new feature works great but if you are often signed in on your browser, you wont see it so you may still want to use this userscript. As of 5/15/2024, this userscript still works with the current version of the Steam website.
+Note: Steam now has a similar button that appears on game pages when you are not signed in. This new feature works great but if you are often signed in on your browser, you won't see it so you may still want to use this userscript. As of 5/15/2024, this userscript still works with the current version of the Steam website.
 
 ### New! (4/8/2026)
 Quickviews on the Steam workshop beta now have a button to open the viewed mod in your client. Can be disabled in the new settings menu if undesired.
@@ -23,7 +23,7 @@ The new settings menu is courtesy of [MonkeyConfig](https://github.com/odyniec/M
 
 <img width="313" height="160" alt="vivaldi_BEX2eu08xp" src="https://github.com/user-attachments/assets/7d72cd88-7790-4f16-ae26-b26973cc046e" />
 
-Below is the settings menu with its default settigns:
+Below is the settings menu with its default settings:
 
 <img width="333" height="185" alt="image" src="https://github.com/user-attachments/assets/1d342b4a-a2fe-411c-8c2b-749c165e0111" />
 
