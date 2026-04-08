@@ -17,7 +17,7 @@ Open the .js file and view as raw. Your Userscript manager should show a page to
 You can also [click here](https://github.com/MrFastZombie/OpenInSteamUserScript/raw/refs/heads/main/OpenInSteam.user.js).
 
 # Settings
-Starting with version 6 there are now settings for the userscript, which can be accessed through the userscript commands menu in your userscript manager. The image below shows how to do so in ViolentMonkey.
+Starting with version 0.6 there are now settings for the userscript, which can be accessed through the userscript commands menu in your userscript manager. The image below shows how to do so in ViolentMonkey.
 
 The new settings menu is courtesy of [MonkeyConfig](https://github.com/odyniec/MonkeyConfig). 
 
