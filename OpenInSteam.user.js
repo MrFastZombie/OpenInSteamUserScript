@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OpenInSteam
-// @version      0.8
+// @version      0.9
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
 // @match        https://*.steampowered.com/*
@@ -42,69 +42,42 @@
     var quickviewDelay = cfg.get('quickview_Delay'); //Delay before injecting quickview button. Tends to not have issues with quicker times.
     var injectQuickViewButton = cfg.get('inject_quickview'); //Will add a quick view button if true.
   //---------------------------------------- END OF CONFIG ----------------------------------------
-  //---------------------------------------- NEW INJECTION ----------------------------------------
-    function attemptNewInject(delay, pdiv, indom, iurl) {
-      var nbuttoncontent = indom.query('<a>', {
-          class:"openClientContent",
-          href: "steam://openurl/" + iurl,
-          text: "Open in client"
-      });
-
-      nbuttoncontent.css({"display":"inline-block","padding-left":"35px","padding-right":"9px","background-position":"10px 5px","background-image":"url( 'https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png' )","background-repeat":"no-repeat","text-decoration":"none","color":"#e5e4dc","font-weight":"normal","background-color":"#3691fa"})
-
-      setTimeout(function() {
-        var newDiv = document.createElement("div");
-        newDiv.setAttribute("id", "OpenInSteamButtonDiv");
-        newDiv.setAttribute('style', 'display: inline-block; height: 24px; line-height: 24px; margin-right: 7px');
-        newDiv.onmouseenter = function() { //Change the href when the user is about to press the button.
-          document.querySelector("#OpenInSteamButtonDiv").shadowRoot.querySelector("a").href = "steam://openurl/" + window.location.href;
-        };
-        var shadow = newDiv.attachShadow({ mode: "open" });
-        pdiv.prepend(newDiv);
-        shadow.appendChild(nbuttoncontent[0]);
-        setTimeout(function() {
-          var openButtonDiv = document.querySelector("#OpenInSteamButtonDiv");
-          if(openButtonDiv == null && delay <= 60000) { //Set a max delay of 60 seconds to avoid infinite recursion.
-            console.log("Couldn't find button! Retrying with delay of "+eval(delay+250))
-            var iButton = indom.query("a:contains(Install Steam)")[0];
-            var parDiv = iButton.parentNode;
-            return attemptNewInject(delay+250, parDiv, indom, iurl);
-          }
-        }, 1000)
-        return;
-      }, delay)
-    }
-  //---------------------------------------- END OF NEW INJECTION ----------------------------------------
 
     var dom = {};
     dom.query = jQuery.noConflict( true );
+    setTimeout(function() {
+      var style = document.createElement('style');
+      style.type = 'text/css';
+      style.innerHTML += `
+        button#openClient:hover {
+          background-color: #6aa9f3;
+          transition: background-color .25s;
+        }
+        button#openClient {
+          background-color: #3691fa;
+        }
+      `;
 
-    var pageurl = dom.query(location).attr('href');
-    var inbutton = dom.query(".header_installsteam_btn_gray");
+      document.head.appendChild(style);
 
-    var installButton = dom.query("a:contains(Install Steam)")[0];
-    var parentDiv = installButton.parentNode;
+      var pageurl = location.href;
+      var inbuttonOld = dom.query(".header_installsteam_btn_gray");
+      var inbutton = [... document.querySelectorAll("a")].filter(item => item.innerText == 'Install Steam')[0];
 
-    var newbutton = dom.query('<div>', {
-        id: 'openClient'
-    });
+      var parentDiv = inbutton.parentNode;
 
-    var newbuttonContent = dom.query('<a>', {
-        class:"openClientContent",
-        href: "steam://openurl/" + pageurl,
-        text: "Open in client"
-    });
+      var newbutton = document.createElement("BUTTON")
+      newbutton.setAttribute("id", "openClient");
+      newbutton.textContent = "Open in client"
 
-    newbutton.css({"display":"inline-block","height":"21px","line-height":"24px","margin-right":"3px"});
-    newbuttonContent.css({"display":"inline-block","padding-left":"35px","padding-right":"9px","background-position":"10px 5px","background-image":"url( 'https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png' )","background-repeat":"no-repeat","text-decoration":"none","color":"#e5e4dc","font-weight":"normal","background-color":"#3691fa"})
+      newbutton.setAttribute('style', 'display: inline-block; height: 24px; margin-right: 7px; padding-left: 33px; padding-right: 10px; border: none; cursor: pointer; background-image: url(https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png); background-repeat: no-repeat; background-position-y: center; background-position-x: 10px; text-decoration: none; font-weight: 400; font-size: 11px; font-family: "Motiva Sans", Sans-serif; color: #e5e4dc');
 
-    if(inbutton[0] == undefined) { //If the inbutton is undefined, we are on the new workshop layout
-      attemptNewInject(initialDelay, parentDiv, dom, pageurl);
+      newbutton.onclick = function() {
+        window.location.href = "steam://openurl/" + location.href;
+      }
 
-    } else { //Normal page injection
-      newbutton.prependTo("#global_action_menu");
-      newbuttonContent.appendTo(newbutton);
-    }
+      parentDiv.prepend(newbutton);
+    }, initialDelay)
 
     // ---------------------------------------- Quick View Injection ----------------------------------------
     function injectQuickview(delay) {
@@ -140,8 +113,9 @@
 
     document.body.addEventListener('click', function(e) { //Potentially run when a click is detected.
       var checkDiv = document.querySelector("#OpenInSteamButtonDivModView");
+      var onWorkshop = location.href.includes('workshop');
 
-      if(inbutton[0] == undefined && checkDiv == null) { //Do not run if on a non-beta page, the button already exists, or if quickview button is disabled.
+      if(onWorkshop == true && checkDiv == null) { //Do not run if not on workshop, the button already exists, or if quickview button is disabled.
         injectQuickview(quickviewDelay);
       }
 
