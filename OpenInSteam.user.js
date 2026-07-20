@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OpenInSteam
-// @version      0.7
+// @version      0.8
 // @description  Adds a button next to the installation button to open the current Steam page in the client.
 // @author       MrFastZombie
 // @match        https://*.steampowered.com/*
@@ -114,20 +114,24 @@
           if(modHeader != null) { //Only run if Quickview is open.
             var modA = document.querySelector('h2:has(a) > a'); //Find the mod header, then select its <a>.
             var subButton = dom.query("button:contains(Subscribe)")[0]; //Select the subscribe button
+            var favButton = dom.query("button:contains(Favorite)")[0];
             var buttonDiv = subButton.parentNode.parentNode.parentNode; //Go three nodes up to get the proper div to inject.
             var nDiv = document.createElement("div");
             nDiv.setAttribute('style', 'display: inline-block;');
             nDiv.setAttribute("id", "OpenInSteamButtonDivModView");
-            var nbutton2 = subButton.cloneNode(true); //Clone the sub button to be turned into the new button.
-            nbutton2.textContent = ""; //Remove its text
+            var nbutton2 = favButton.cloneNode(true); //Clone the fav button to be turned into the new button.
+            nbutton2.textContent = "Open in client"; //Remove its text
             nbutton2.setAttribute('style', '--min-width: fit-content; padding: 0px; max-height: stretch')
-            var linka = document.createElement("a");
-            linka.href = "steam://openurl/" + modA.href;
-            linka.text = "Open in client";
-            linka.setAttribute('style', 'width: auto; height: auto; text-decoration: none; padding-right: 7px; padding-left: 29px; padding-top: 7px; height: stretch; text-wrap-mode: nowrap; background-image: url(https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png); background-repeat: no-repeat; background-position-y: center; background-position-x: 8px');
+            nbutton2.setAttribute('style', '--min-width: fit-content; width: auto; height: auto; text-decoration: none; padding-right: 7px; padding-left: 29px; padding-top: 0px; height: stretch; text-wrap-mode: nowrap; background-image: url(https://raw.githubusercontent.com/MrFastZombie/OpenInSteamUserScript/main/OpenInSteamIcon.png); background-repeat: no-repeat; background-position-y: center; background-position-x: 8px')
+
             if(document.querySelectorAll("#OpenInSteamButtonDivModView").length >= 1) return; //Skip adding the button if it already exists.
+
+            nbutton2.onclick = function() { //Use the button to open the link stead of an <a>.
+              window.location.href = "steam://openurl/" + modA.href;
+            }
+
             buttonDiv.prepend(nDiv);
-            nbutton2.prepend(linka);
+            //nbutton2.prepend(linka);
             nDiv.prepend(nbutton2);
           }
         }, delay)
